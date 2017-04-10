@@ -1,9 +1,8 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
+#include "dialog.h"
 
 /**
  * Structure containing all information about the server for MyAdblock
@@ -13,7 +12,7 @@
  */
 
 typedef struct server {
-  int serverSocket;
+  int server_socket;
   struct sockaddr_in serv_addr;
 } server;
 
@@ -36,7 +35,7 @@ void listen_server(server *s);
 /**
   wait and accept a connection on the server socket.
 */
-void accept_server(server *s);
+dialog* accept_server(server *s);
 
 /**
   Print information about the given server structure.

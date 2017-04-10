@@ -1,8 +1,6 @@
 #ifndef DIALOG_H
 #define DIALOG_H
 
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
 
 /**
@@ -13,7 +11,7 @@
  */
 
 typedef struct dialog {
-  int dialog;
+  int dialog_socket;
   int clilen;
   struct sockaddr_in cli_addr;
 } dialog;
@@ -21,6 +19,8 @@ typedef struct dialog {
 /**
   Allocate memory for the dialog socket structure and create the socket.
  */
-dialog* create_dialog(int socket);
+dialog* create_dialog();
+
+void print_dialog(dialog *d);
 
 #endif
