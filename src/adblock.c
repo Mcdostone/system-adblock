@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -6,6 +7,8 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include "server.h"
+#include "utils.h"
+#define BUFFER_SIZE 1024
 
 struct sockaddr_in serv_addr;
 
@@ -17,7 +20,7 @@ void print_usage(char *pgm) {
 }
 
 int main(int argc, char *argv[]) {
-  // Get options of user
+  // parse options
   int port = 0;
   int opt = 0;
   int long_index = 0;
@@ -38,13 +41,11 @@ int main(int argc, char *argv[]) {
       }
   }
 
-  // create all sockets
-  dialog *d;
-  d = NULL;
+  // program
   server *s = create_server(port);
   bind_server(s);
   listen_server(s);
   printf("Listening on http://%s:%d\n\n", get_server_address(s), get_server_port(s));
-  d = accept_server(s);
-  print_dialog(d);
+  accept_server(s);
+
 }

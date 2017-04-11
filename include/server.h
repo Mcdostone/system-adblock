@@ -38,6 +38,11 @@ void listen_server(server *s);
 dialog* accept_server(server *s);
 
 /**
+  Close the server socket.
+  */
+void close_server(server *s);
+
+/**
   Print information about the given server structure.
  */
 void print_server(server *s);

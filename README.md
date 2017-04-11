@@ -22,7 +22,7 @@ The aim of this project is to develop a similar program to ad blockers in web br
     ./adblock --port=3141
 
 
-On linux, there is some restrictions with on chromium web browser, you have to use the following command line to tell the browser the proxy to use:
+On linux, there is some restrictions with the chromium web browser, you have to use the following command line to tell the browser the proxy to use:
 
     # chromium
     chromium-browser --proxy-server="127.0.0.1:3141"

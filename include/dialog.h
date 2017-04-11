@@ -21,6 +21,16 @@ typedef struct dialog {
  */
 dialog* create_dialog();
 
+/**
+ Read data from web broswer and get the IP address of the given URL.
+ */
+void read_request(dialog *d);
+
+/**
+  Close the dialog socket.
+ */
+void close_dialog(dialog *d);
+
 void print_dialog(dialog *d);
 
 #endif
