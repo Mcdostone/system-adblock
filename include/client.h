@@ -23,7 +23,9 @@ client* create_client(char *http_request);
 
 void connect_client(client *c);
 
-void sent_http_request( client *c);
+void send_http_request(client *c);
+
+void get_http_response(client *c);
 
 void print_client(client *c);
 

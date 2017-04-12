@@ -30,12 +30,14 @@ void read_request(dialog *d) {
   buffer[BUFFER_SIZE - 1] = 0;
   c = create_client(buffer);
   print_client(c);
+  connect_client(c);
+  send_http_request(c);
+  get_http_response(c);
 }
 
 void close_dialog(dialog *d) {
   close(d->dialog_socket);
 }
-
 
 void print_dialog(dialog *d) {
   printf("### MyAdblock dialog socket ###\n");

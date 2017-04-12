@@ -29,18 +29,18 @@ On linux, there is some restrictions with the chromium web browser, you have to 
 
 It's very boring to change every compilation, the proxy of your web browser, just run the following:
 
-    make test
     # execute ./adblock and 'curl 01net.com'
+    # DEBUG=1 enables to print more things at the execution
+    make test DEBUG=1
 
 <p align="center">
 <img width="45%" src="https://s-media-cache-ak0.pinimg.com/564x/03/54/ce/0354ce58a7a4308edcc46dd9238e12d7.jpg" alt="Amazing book!"/>
 </p>
 
 
-
 ## Observations
 
-- On firefox dev edition (can't test on chromium....) there is some special characters at the end of the request, don't know what is it!
+- On firefox dev edition, there is some special characters at the end of some requests, don't know what it is!
 
       POST http://ocsp.digicert.com/ HTTP/1.1
       Host: ocsp.digicert.com
@@ -58,6 +58,7 @@ It's very boring to change every compilation, the proxy of your web browser, jus
 ## License
 
 See the [LICENCE file !](https://github.com/quentin-tardivon/system-adblock/blob/master/LICENSE)
+
 
 ## Authors
 

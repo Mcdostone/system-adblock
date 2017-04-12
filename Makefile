@@ -3,7 +3,11 @@ SRCDIR = src
 BUILDDIR = build
 RANDOM_PORT = $(shell awk -v min=10000 -v max=65000 'BEGIN{srand(); print int(min+rand()*(max-min+1))}')
 OBJ = $(wildcard $(BUILDDIR)/*.o)
-CFLAGS = -g -Wall
+ifeq ($(DEBUG),1)
+CFLAGS = -g -Wall -DDEBUG=1
+else
+CFLAGS = -g -Wall -DDEBUG=0
+endif
 INC = -I $(INCDIR)
 CC = gcc
 PGM = adblock
@@ -22,7 +26,7 @@ main: server.o client.o dialog.o utils.o adblock.o
 build: main
 
 test: build
-	@$(TARGET) --port $(RANDOM_PORT) &  sleep 1 ; curl -x 127.0.0.1:$(RANDOM_PORT) http://www.01net.com
+	@$(TARGET) --port $(RANDOM_PORT) & sleep 1 ; curl -x 127.0.0.1:$(RANDOM_PORT) http://www.01net.com
 
 clean:
 	@rm -rf $(TARGET)
