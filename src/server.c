@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include "server.h"
+#include "../include/server.h"
 #define LOCALHOST "127.0.0.1"
 
 
@@ -29,6 +29,13 @@ void bind_server(server *s) {
       perror("Error on server socket: cannot bind the server with the given IP address or port\n");
       exit (1);
     }
+
+    //To be able to reuse the socket in case of server fail
+    if (setsockopt(s->server_socket, SOL_SOCKET, SO_REUSEADDR, &(int){ 1 }, sizeof(int)) < 0) {
+      perror("setsockopt(SO_REUSEADDR) failed");
+      exit(1);
+    }
+
     // Need to call getsockname in order to have the port the socket is currently listening
     socklen_t len = sizeof(s->server_socket);
     if (getsockname(s->server_socket, (struct sockaddr *) &(s->serv_addr), &len) == -1) {

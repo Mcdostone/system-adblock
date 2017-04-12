@@ -3,8 +3,8 @@
 #include <string.h>
 #include <unistd.h>
 #include <regex.h>
-#include "dialog.h"
-#include "utils.h"
+#include "../include/dialog.h"
+#include "../include/utils.h"
 #define BUFFER_SIZE 1024
 #define URL_REGEX   "GET (.*) HTTP\\/1.1"
 
