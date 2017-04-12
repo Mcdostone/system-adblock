@@ -1,26 +1,29 @@
-#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
 #include <getopt.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <string.h>
-#include "../include/server.h"
-#include "../include/utils.h"
+#include <signal.h>
+#include "server.h"
+#include "utils.h"
 #define BUFFER_SIZE 1024
 
-struct sockaddr_in serv_addr;
+
+server *s;
 
 void print_usage(char *pgm) {
   printf("Usage: %s [OPTIONS]\n", pgm);
   printf("Options:\n");
-  printf("  %-20s %s\n",      "-p, --port=PORT",  "Specifie the port the server socket will listen");
+  printf("  %-20s %s\n",      "-p, --port=PORT",  "Specify the port the server socket will listen");
   printf("  %-20s %s\n\n",    "--help",           "Display this help and exit");
+}
+
+void  INThandler(int sig) {
+     free(s);
+     exit(0);
 }
 
 int main(int argc, char *argv[]) {
   // parse options
+  signal(SIGINT, INThandler);
   int port = 0;
   int opt = 0;
   int long_index = 0;
@@ -42,10 +45,9 @@ int main(int argc, char *argv[]) {
   }
 
   // program
-  server *s = create_server(port);
+  s = create_server(port);
   bind_server(s);
   listen_server(s);
   printf("Listening on http://%s:%d\n\n", get_server_address(s), get_server_port(s));
   accept_server(s);
-
 }

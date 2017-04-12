@@ -1,7 +1,7 @@
 INCDIR = include
 SRCDIR = src
 BUILDDIR = build
-RANDOM_PORT = $(shell shuf -i 2000-65000 -n 1)
+RANDOM_PORT = $(shell awk -v min=10000 -v max=65000 'BEGIN{srand(); print int(min+rand()*(max-min+1))}')
 OBJ = $(wildcard $(BUILDDIR)/*.o)
 CFLAGS = -g -Wall
 INC = -I $(INCDIR)
@@ -20,6 +20,9 @@ main: server.o client.o dialog.o utils.o adblock.o
 	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
 
 build: main
+
+test: build
+	@$(TARGET) --port $(RANDOM_PORT) &  sleep 1 ; curl -x 127.0.0.1:$(RANDOM_PORT) http://www.01net.com
 
 clean:
 	@rm -rf $(TARGET)

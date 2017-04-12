@@ -1,3 +1,3 @@
-char* get_ip_address(char *url);
+char* get_hostname(char *http_request);
 
-char* extract_hostname(char *http_request);
+char* get_port(char *hostname);

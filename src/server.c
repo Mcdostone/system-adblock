@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <arpa/inet.h>
-#include "../include/server.h"
+#include "server.h"
 #define LOCALHOST "127.0.0.1"
 
 
@@ -64,6 +63,7 @@ dialog* accept_server(server *s) {
       numDialog = accept(s->server_socket, (struct sockaddr *) &(d->cli_addr), (socklen_t *)&(d->clilen));
       d->dialog_socket = numDialog;
       read_request(d);
+      free(d);
     }
   }
   return NULL;

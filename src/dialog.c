@@ -3,10 +3,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <regex.h>
-#include "../include/dialog.h"
-#include "../include/utils.h"
-#define BUFFER_SIZE 1024
-#define URL_REGEX   "GET (.*) HTTP\\/1.1"
+#include "dialog.h"
+#include "client.h"
+#define BUFFER_SIZE 4096
 
 
 dialog* create_dialog() {
@@ -18,13 +17,6 @@ dialog* create_dialog() {
 void read_request(dialog *d) {
   char buffer[BUFFER_SIZE];
   memset(buffer, 0, sizeof(char) * BUFFER_SIZE);
-  regex_t re;
-
-  // Build regex to extract URL from HTTP request
-  if(regcomp(&re, URL_REGEX, REG_EXTENDED) != 0) {
-    fprintf(stderr, "Failed to compile regex '%s'\n", URL_REGEX);
-    exit(0);
-  }
 
   // BUG Strange, impossible to exit this loop, I don't know why
   // The most strange is there is only 1 print in the terminal ...
@@ -34,10 +26,10 @@ void read_request(dialog *d) {
   }*/
 
   read(d->dialog_socket, buffer, BUFFER_SIZE - 1);
-  // Prints only X first chars
-  printf ("%.*s...\n", 180, buffer);
-  char *hostname = extract_hostname(buffer);
-  printf("\n## The host is '%s'\n\n", hostname);
+  client *c;
+  buffer[BUFFER_SIZE - 1] = 0;
+  c = create_client(buffer);
+  print_client(c);
 }
 
 void close_dialog(dialog *d) {

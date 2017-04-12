@@ -1,7 +1,6 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <arpa/inet.h>
 #include "dialog.h"
 
 /**
