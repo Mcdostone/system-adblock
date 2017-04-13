@@ -2,7 +2,7 @@
 
 The aim of this project is to develop a similar program to ad blockers in web browsers. We have to program a proxy in C language which will analyze incoming traffic and removes suspicious contents that are advertisements. This project is developed in the context of the course about advanced networks and systems teached at TELECOM Nancy.
 
-![Schema of the proxy to implement](doc/schema.png)
+![Schema of the proxy to implement](doc/img/schema.png)
 
 
 ## Project structure
@@ -30,7 +30,7 @@ On linux, there is some restrictions with the chromium web browser, you have to 
 It's very boring to change every compilation, the proxy of your web browser, just run the following:
 
     # execute ./adblock and 'curl 01net.com'
-    # DEBUG=1 enables to print more things at the execution
+    # DEBUG=1 enables to print more things during the execution
     make test DEBUG=1
 
 <p align="center">
@@ -53,6 +53,8 @@ It's very boring to change every compilation, the proxy of your web browser, jus
       Connection: keep-alive
 
       0Q0O0M0K0I0	+
+
+- Sockets communications are established. On small websites (example.com), the proxy works fine. But on big websites like 01net.com, Some contents miss in the web broswer. In consequence, a lot of requests which depends on HTML page (CSS, JS, ...) are not loaded. I think that the fix should be done in [client.c: get_http_response(...)](https://github.com/quentin-tardivon/system-adblock/blob/master/src/client.c#L54)
 
 
 ## License

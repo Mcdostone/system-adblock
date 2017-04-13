@@ -59,18 +59,18 @@ void get_http_response(client *c, dialog *d) {
   if(DEBUG == 1)
     printf("-- [%d] Send response to the browser from '%s'\n", c->client_socket, hostname);
 
-  do {
+  /*do {
     count = read(c->client_socket, buffer ,BUFFER_SIZE - 1);
     printf("%s\n", buffer);
     send(d->dialog_socket, buffer, count, MSG_DONTWAIT);
     count = count < BUFFER_SIZE ? -1 : count;
-  } while (count != -1);
+  } while (count != -1);*/
 
-/*  while((count = read(c->client_socket, buffer ,BUFFER_SIZE - 1)) != 0) {
+  while((count = read(c->client_socket, buffer ,BUFFER_SIZE - 1)) != 0) {
     send(d->dialog_socket, buffer, count, MSG_DONTWAIT);
     printf("%s\n %d\n", buffer, count);
   }
-*/
+
   if(DEBUG == 1)
     printf("-- [%d] All data received by web browser [%d]\n", c->client_socket, d->dialog_socket);
 

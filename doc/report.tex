@@ -1,0 +1,104 @@
+\documentclass[a4paper,11pt, oneside]{book}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{multicol}
+\usepackage{etoolbox}
+\usepackage{color}
+\usepackage[explicit,pagestyles]{titlesec}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage{eurosym}
+\usepackage{titlesec}
+
+
+% ====== CONFIG ========
+
+\setmainfont{Roboto Light}
+
+\setmainfont{Roboto Light}
+\setsansfont{Roboto}
+\setmonofont{Roboto}
+\newfontfamily\light{Roboto Slab Light}
+\graphicspath{{img/}}
+\setlength{\unitlength}{1mm}
+
+\makeatletter
+
+\definecolor{primary}{RGB}{44, 62, 80}
+
+
+\titleformat{\chapter}[display]{\huge}{\thechapter \quad #1}{0pt}{}
+\titlespacing{\chapter}{0pt}{0pt}{0pt}
+
+\titleformat{\section}[display]{\LARGE}{}{0pt}{\thesection \quad #1}
+
+
+\setlength{\TPHorizModule}{1mm}
+\setlength{\TPVertModule}{1mm}
+\def\sizeMedia{38}
+\def\size{3.8cm}
+\def\sizeMargin{0.2cm}
+\def\margin{2}
+\def\fixMargin{0}
+
+\pagestyle{plain}
+
+\author{Yann Prono, Quentin Tardivon}
+\date{\today}
+
+\def\school{TELECOM Nancy}
+\def\schoolAddress{193 Avenue Paul Muller}
+\def\schoolPostalCode{54602}
+\def\schoolCity{Villers-lès-Nancy}
+\def\schoolCodeAndCity{\schoolPostalCode, \schoolCity}
+\def\schoolYear{2016 - 2017}
+
+\def\appName{MyAdblock}
+
+\def\schoolYear{2016 - 2017}
+
+% ====== END CONFIG ========
+
+
+\begin{document}
+
+	\begin{titlepage}
+		\input{cover}
+	\end{titlepage}
+
+
+	\newpage\newpage\null\thispagestyle{empty}
+	\newpage
+		\tableofcontents
+		\thispagestyle{empty}
+
+
+	\chapter{Introduction}
+
+	\setcounter{page}{1}
+
+Is this the fifteen time you passed the TOEIC test and you still didn't get it ?
+Are you bored about making uninteresting tests on abandoned websites?
+Do you want to improve your english level by listening dialogs of your preferred TV serie ?
+Do you want to challenge others people about your language skills ?
+Do you sing songs that you don't understand ?\\
+
+\noindent English is everywhere: music, TV series, movies, articles, documentation, comics strip, social networks, youtube videos etc...
+All these supports are gold nuggets. Indeed, a lot of people use these media in their daily lives in their native language.
+Due to success of all these media and the utility for people, it can be possible to use some of them in order to learn a new language.\\
+
+\noindent \appName \ is a quiz developed in the english courses context. It has been developed by students for students who want to test a new way to learn english.
+Rules are simple: you have to answer a set of questions about general culture, grammar, listening comprehension, vocabulary... If you answer wrong 3 times, you lose and have to play again since the beginning of the quiz.
+At the end of a quiz session, you have the possibility to share your score with others and measure your evolution.
+In order to not be bored about the application, users have to possibility to suggest questions to expand the quiz.
+
+
+\end{document}
