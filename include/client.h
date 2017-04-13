@@ -2,6 +2,7 @@
 #define CLIENT_H
 
 #include <netdb.h>
+#include "dialog.h"
 
 /**
  * Structure containing all structures about the client for MyAdblock
@@ -21,11 +22,15 @@ typedef struct client {
  */
 client* create_client(char *http_request);
 
+void handle_request(client *c, dialog *d);
+
 void connect_client(client *c);
 
 void send_http_request(client *c);
 
-void get_http_response(client *c);
+void get_http_response(client *c, dialog *d);
+
+void close_client(client *c);
 
 void print_client(client *c);
 

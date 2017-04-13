@@ -25,14 +25,18 @@ void read_request(dialog *d) {
     printf("%s %d\n", buffer, tmp);
   }*/
 
-  read(d->dialog_socket, buffer, BUFFER_SIZE - 1);
+  recv(d->dialog_socket, buffer, BUFFER_SIZE - 1, 0);
   client *c;
   buffer[BUFFER_SIZE - 1] = 0;
   c = create_client(buffer);
-  print_client(c);
-  connect_client(c);
-  send_http_request(c);
-  get_http_response(c);
+  if( c != NULL) {
+    if(DEBUG == 1)
+      print_dialog(d);
+    handle_request(c, d);
+    close_client(c);
+  }
+  else
+    printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
 }
 
 void close_dialog(dialog *d) {
@@ -40,6 +44,6 @@ void close_dialog(dialog *d) {
 }
 
 void print_dialog(dialog *d) {
-  printf("### MyAdblock dialog socket ###\n");
-  printf(" - socket descriptor: %d\n", d->dialog_socket);
+  printf("\n-- MyAdblock dialog socket\n");
+  printf("\t- socket descriptor: %d\n\n", d->dialog_socket);
 }

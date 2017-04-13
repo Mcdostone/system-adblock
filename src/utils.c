@@ -9,6 +9,7 @@
 // ONLY THE URL: [a-zA-Z0-9\\.-]+\\.[A-Za-z]+
 #define REGEX_HOSTNAME "Host:\\s+([a-zA-Z0-9\\.-]+\\.[A-Za-z]+)(:|\r|\n)"
 #define REGEX_PORT_IN_HOSTNAME "Host:\\s+[a-zA-Z0-9\\.-]+\\.[A-Za-z]+:([0-9]+)(|\r|\n)"
+#define REGEX_METHOD "^GET"
 
 
 char* get_hostname(char *http_request) {
@@ -70,4 +71,18 @@ char* get_port(char *http_request) {
   }
   regfree(&regex_port);
   return NULL;
+}
+
+int is_GET(char *http_request) {
+  regex_t regex_method;
+  int res;
+  int status = regcomp(&regex_method, REGEX_METHOD, REG_EXTENDED);
+  if(status  != 0) {
+    perror("Error when compiling the regex\n");
+    exit(1);
+  }
+  char * p = http_request;
+  res = regexec(&regex_method, p, 0, NULL, 0);
+  regfree(&regex_method);
+  return res;
 }

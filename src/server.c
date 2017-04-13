@@ -58,12 +58,37 @@ void listen_server(server *s) {
 dialog* accept_server(server *s) {
   if(s->server_socket >= 0) {
     int numDialog;
-    for (;;) {
+    /*while(1) {
       dialog* d = create_dialog();
       numDialog = accept(s->server_socket, (struct sockaddr *) &(d->cli_addr), (socklen_t *)&(d->clilen));
       d->dialog_socket = numDialog;
-      read_request(d);
-      free(d);
+      if (fork() == 0) {
+         read_request(d);
+         exit(0);
+     }
+     close(d->dialog_socket);
+     free(d);
+   }*/
+
+    for (;;) {
+
+      dialog* d = create_dialog();
+      if(DEBUG == 1)
+        printf("-- [%d] Waiting for a connection\n", s->server_socket);
+      numDialog = accept(s->server_socket, (struct sockaddr *) &(d->cli_addr), (socklen_t *)&(d->clilen));
+      d->dialog_socket = numDialog;
+      switch (fork()) {
+        case -1:
+          perror("probleme fork");
+          exit(1);
+        case 0:
+          //close(sockfd);
+          read_request(d);
+          close_dialog(d);
+        exit(0);
+        default:
+          close_dialog(d);
+      }
     }
   }
   return NULL;
@@ -74,10 +99,9 @@ void close_server(server *s) {
 }
 
 void print_server(server *s) {
-  printf("### MyAdblock server ###\n");
-  printf(" - Socket descriptor: %d\n", s->server_socket);
-  printf(" - IP address: %s\n", get_server_address(s));
-  printf(" - Port: %d\n\n", get_server_port(s));
+  printf("\n-- MyAdblock server\n");
+  printf("\t- Socket descriptor: %d\n", s->server_socket);
+  printf("\t- Port: %d\n\n", get_server_port(s));
 }
 
 int get_server_port(server *s) {
