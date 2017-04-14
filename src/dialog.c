@@ -5,7 +5,6 @@
 #include <regex.h>
 #include "dialog.h"
 #include "client.h"
-#define BUFFER_SIZE 4096
 
 
 dialog* create_dialog() {
@@ -15,28 +14,21 @@ dialog* create_dialog() {
 }
 
 void read_request(dialog *d) {
-  char buffer[BUFFER_SIZE];
-  memset(buffer, 0, sizeof(char) * BUFFER_SIZE);
+  char buffer[HTTP_REQUEST_SIZE];
+  memset(buffer, 0, sizeof(char) * HTTP_REQUEST_SIZE);
 
-  // BUG Strange, impossible to exit this loop, I don't know why
-  // The most strange is there is only 1 print in the terminal ...
-  /*int tmp;
-  while((tmp = read(d->dialog_socket, buffer, BUFFER_SIZE - 1)) > 0) {
-    printf("%s %d\n", buffer, tmp);
-  }*/
-
-  recv(d->dialog_socket, buffer, BUFFER_SIZE - 1, 0);
+  recv(d->dialog_socket, buffer, HTTP_REQUEST_SIZE - 1, 0);
   client *c;
-  buffer[BUFFER_SIZE - 1] = 0;
+  buffer[HTTP_REQUEST_SIZE - 1] = 0;
   c = create_client(buffer);
   if( c != NULL) {
-    if(DEBUG == 1)
-      print_dialog(d);
     handle_request(c, d);
     close_client(c);
   }
-  else
-    printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
+  else {
+    if(DEBUG == 1)
+      printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
+  }
 }
 
 void close_dialog(dialog *d) {

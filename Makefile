@@ -26,7 +26,7 @@ main: server.o client.o dialog.o utils.o adblock.o
 build: main
 
 test: build
-	@$(TARGET) --port $(RANDOM_PORT) & sleep 1 ; curl -x 127.0.0.1:$(RANDOM_PORT) http://www.01net.com
+	@$(TARGET) --port $(RANDOM_PORT) & sleep 2 ; curl -x 127.0.0.1:$(RANDOM_PORT) http://www.01net.com
 
 clean:
 	@rm -rf $(TARGET)

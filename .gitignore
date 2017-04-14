@@ -4,7 +4,7 @@
 *.obj
 *.elf
 adblock
-
+test.c
 build/
 
 # Precompiled Headers

@@ -58,36 +58,21 @@ void listen_server(server *s) {
 dialog* accept_server(server *s) {
   if(s->server_socket >= 0) {
     int numDialog;
-    /*while(1) {
-      dialog* d = create_dialog();
-      numDialog = accept(s->server_socket, (struct sockaddr *) &(d->cli_addr), (socklen_t *)&(d->clilen));
-      d->dialog_socket = numDialog;
-      if (fork() == 0) {
-         read_request(d);
-         exit(0);
-     }
-     close(d->dialog_socket);
-     free(d);
-   }*/
 
     for (;;) {
-
-      dialog* d = create_dialog();
-      if(DEBUG == 1)
-        printf("-- [%d] Waiting for a connection\n", s->server_socket);
+      dialog *d = create_dialog();
       numDialog = accept(s->server_socket, (struct sockaddr *) &(d->cli_addr), (socklen_t *)&(d->clilen));
       d->dialog_socket = numDialog;
-      switch (fork()) {
-        case -1:
-          perror("probleme fork");
-          exit(1);
-        case 0:
-          //close(sockfd);
-          read_request(d);
-          close_dialog(d);
+      if(fork() == 0) {
+        read_request(d);
+        close(numDialog);
+        free(d);
+        close(s->server_socket);
         exit(0);
-        default:
-          close_dialog(d);
+      }
+      else {
+        close(numDialog);
+        free(d);
       }
     }
   }
