@@ -4,6 +4,7 @@
 #include <netdb.h>
 #include "dialog.h"
 #define HTTP_REQUEST_SIZE 1024
+#define HOSTNAME_SIZE 512
 
 /**
  * Structure containing all structures about the client for MyAdblock
@@ -14,8 +15,8 @@
 
 typedef struct client {
   int client_socket;
-  char* hostname;
   char* http_request;
+  char hostname[512];
   struct addrinfo hints, *res;
   char new_http_request[HTTP_REQUEST_SIZE];
 } client;

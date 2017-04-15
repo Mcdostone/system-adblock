@@ -1,7 +1,7 @@
 /**
  * Retrieve the hostname of the HTTP request.
  */
-char* get_hostname(char *http_request);
+char* get_hostname(char *http_request, char* hostname);
 
 /**
  * Retrieve the port if exists in the HTTP request.

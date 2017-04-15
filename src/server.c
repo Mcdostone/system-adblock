@@ -67,7 +67,8 @@ dialog* accept_server(server *s) {
         read_request(d);
         close(numDialog);
         free(d);
-        close(s->server_socket);
+        close_server(s);
+        free(s);
         exit(0);
       }
       else {

@@ -24,6 +24,7 @@ void read_request(dialog *d) {
   if( c != NULL) {
     handle_request(c, d);
     close_client(c);
+    free(c);
   }
   else {
     if(DEBUG == 1)

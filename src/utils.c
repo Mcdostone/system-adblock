@@ -12,7 +12,7 @@
 #define REGEX_METHOD "^GET"
 
 
-char* get_hostname(char *http_request) {
+char* get_hostname(char *http_request, char* hostname) {
   regex_t regex_hostname;
   int status = regcomp(&regex_hostname, REGEX_HOSTNAME, REG_EXTENDED);
   if(status  != 0) {
@@ -26,9 +26,6 @@ char* get_hostname(char *http_request) {
 
   if(regexec(&regex_hostname, p, n_matches, m, 0) == 0) {
     int len = m[1].rm_eo - m[1].rm_so;
-    char *hostname;
-    hostname = (char *) malloc(sizeof(char) * len + 1);
-    hostname[len] = 0;
     strncpy(hostname, (http_request + m[1].rm_so), len);
     regfree(&regex_hostname);
     return hostname;

@@ -19,11 +19,12 @@ client* create_client(char *http_request) {
     c = (client *) malloc(sizeof(client));
     memset(&(c->hints), 0, sizeof(c->hints));
     memset(c->new_http_request, 0, HTTP_REQUEST_SIZE);
+    memset(c->hostname, 0, HOSTNAME_SIZE);
     c->hints.ai_family = AF_INET;
     c->http_request = http_request;
     c->hints.ai_socktype = SOCK_STREAM;
 
-    c->hostname = get_hostname(c->http_request);
+    get_hostname(c->http_request, c->hostname);
     getaddrinfo(c->hostname, DEFAULT_PORT, &(c->hints), &(c->res));
     c->client_socket = socket(c->res->ai_family, c->res->ai_socktype, c->res->ai_protocol);
 
