@@ -21,15 +21,14 @@
 
 % ====== CONFIG ========
 
-\setmainfont{Roboto Light}
+%\setmainfont{Roboto Light}
 
-\setmainfont{Roboto Light}
-\setsansfont{Roboto}
-\setmonofont{Roboto}
-\newfontfamily\light{Roboto Slab Light}
+%\setmainfont{Roboto Light}
+%\setsansfont{Roboto}
+%\setmonofont{Roboto}
+%\newfontfamily\light{Roboto Slab Light}
 \graphicspath{{img/}}
 \setlength{\unitlength}{1mm}
-
 \makeatletter
 
 \definecolor{primary}{RGB}{44, 62, 80}
@@ -62,6 +61,7 @@
 \def\schoolYear{2016 - 2017}
 
 \def\appName{MyAdblock}
+\def\widthImage{1}
 
 \def\schoolYear{2016 - 2017}
 
@@ -82,23 +82,61 @@
 
 
 	\chapter{Introduction}
-
 	\setcounter{page}{1}
 
-Is this the fifteen time you passed the TOEIC test and you still didn't get it ?
-Are you bored about making uninteresting tests on abandoned websites?
-Do you want to improve your english level by listening dialogs of your preferred TV serie ?
-Do you want to challenge others people about your language skills ?
-Do you sing songs that you don't understand ?\\
+		La publicité sur internet est un moyen simple de gagner de l'argent.
+		Celles-ci sont intégrés au sein même du site web (vidéos, bannières publicitaires...). L'abondance de contenus publicitaires apportent
+		cependant quelques désavantages: L'utilisateur peut être distrait par ces publicités, la lecture du site web est plus difficile
+		étant donnée la quantité d'information et l'affichage de ces publicités demandent plus de bande passante
+		ainsi que de ressources pour le navigateur web.Il existe cependant des logiciels permettant de supprimer
+		ces publicités. Ces logiciels vont analyser le flux entrant et sortant du navigateur afin de filtrer le contenu publicitaire.\\
 
-\noindent English is everywhere: music, TV series, movies, articles, documentation, comics strip, social networks, youtube videos etc...
-All these supports are gold nuggets. Indeed, a lot of people use these media in their daily lives in their native language.
-Due to success of all these media and the utility for people, it can be possible to use some of them in order to learn a new language.\\
+		\noindent Dans le cadre de ce projet, nous devons développer un proxy ayant la même fonctionnaalité qu'un bloqueur de publicités.
+		Ce proxy sera programmé en langage C à l'aide des sockets vu durant les cours.
 
-\noindent \appName \ is a quiz developed in the english courses context. It has been developed by students for students who want to test a new way to learn english.
-Rules are simple: you have to answer a set of questions about general culture, grammar, listening comprehension, vocabulary... If you answer wrong 3 times, you lose and have to play again since the beginning of the quiz.
-At the end of a quiz session, you have the possibility to share your score with others and measure your evolution.
-In order to not be bored about the application, users have to possibility to suggest questions to expand the quiz.
 
+	\chapter{Analyse}
+
+		Afin de comprendre comment il est possible de filtrer les publicités, il est nécéssaire de comprendre fonctionne un navigateur web.
+		On dispose de :
+		\begin{itemize}
+			\item Un navigateur web (le choix a peu d'importance dans le cadre de ce projet)
+			\item Wireshark, un logiciel permettant capturer les paquets entrants et sortants de la machine\\
+		\end{itemize}
+		\noindent L'analyse des échanges TCP et HTTP se fera sur le site
+		\href{http://www.telecomnancy.univ-lorraine.fr}{http://www.telecomnancy.univ-lorraine.fr}.
+		Le site \href{http://www.01net.com}{http://www.01net.com} quant à lui sera utilisé pour
+		analyser et tester le filtrage de publicités (abondance de publicités et la communication avec ce site n'est pas chiffrée).
+
+		\section{Analyse du site telecomnancy.univ-lorraine.fr}
+
+		Lorsque l'on souhaite accéder au site \href{http://www.telecomnancy.univ-lorraine.fr}{http://www.telecomnancy.univ-lorraine.fr} (on suppose que l'on dispose de l'adresse
+		IP du serveur), des requêtes TCP (12, 13 et 14) sont envoyés au serveur afin d'initialiser la phase de connexion
+		Suite à cela, une requête HTTP (15) de type \textit{GET} est envoyée au serveur afin de le contenu HTML du site web. La réponse du serveur est
+		obtenu au paquet 29. Le contenu HTML est alors affiché dans le navigateur:
+
+		\begin{figure} [htbp]
+			\centering
+			\includegraphics[width=\widthImage\textwidth]{1.png}\\
+			\caption{Echanges de paquets au début de la communication}
+		\end{figure}
+
+		\noindent Cependant, le contenu HTML dépend d'autres ressources. Il est donc nécéssaire
+		récupérer les différentes ressources (images, fichiers CSS, fichiers JS). De nouvelles requêtes sont alors envoyées (35, 38, 41...):
+
+		\begin{figure} [htbp]
+			\centering
+			\includegraphics[width=\widthImage\textwidth]{2.png}\\
+			\caption{Nouvelles requêtes émises suite à la réception du contenu HTML}
+		\end{figure}
+
+
+		On peut également retrouver l'ensemble de ces requêtes dans l'outil de développement integré dans les navigateurs web:
+
+		\begin{figure} [htbp]
+			\centering
+			\includegraphics[width=\widthImage\textwidth]{3.png}\\
+			\caption{Requêtes HTTP effectuées par le navigateur web}
+		\end{figure}
 
 \end{document}
