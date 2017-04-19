@@ -17,6 +17,7 @@
 \usepackage{fontspec}
 \usepackage{eurosym}
 \usepackage{titlesec}
+\usepackage[]{algorithm2e}
 
 
 % ====== CONFIG ========
@@ -138,5 +139,53 @@
 			\includegraphics[width=\widthImage\textwidth]{3.png}\\
 			\caption{Requêtes HTTP effectuées par le navigateur web}
 		\end{figure}
+
+	\clearpage
+	\section{Analyse du site 01net.com}
+		Le site contient de nombreux contenus publicitaires. Voici quelques requêtes permettant
+		de faire une hypothese sur l'algorithme à développer:
+
+		\begin{figure} [htbp]
+			\centering
+			\includegraphics[width=\widthImage\textwidth]{4.png}\\
+			\caption{Requêtes HTTP pour la demande de publicités}
+		\end{figure}
+
+		Des requêtes sont faites afin de demander des ressources utiles au bon fonctionnement du site (62 pour le style avec Bootstrap twitter, 63 pour JQuery).
+		D'autres sont faites afin de charger les publicités sur le site: requête 69, 75 et 79.
+		Si on s'intéresse à ces trois requêtes précédentes, on peut remarquer plusieurs caractéristiques:
+		\begin{itemize}
+			\item Les requêtes peuvent faire appel à une ressource directement chez un service tiers: pour la requête 79,
+			on a dans la requête HTTP le champ  \textit{Host: c.amazon-adsystem.com}.
+			\item la réponse à une requête peut rediriger vers une autre URL disponible sur un autre serveur:
+			on a dans la réponse HTTP de la requête 75 le champ \textit{Location: http://ak-ns.sascdn.com/diff/js/smart.js}, cela
+			signifie que le navigateur devra faire une nouvelle requête à l'adresse indique dans le champ \textit{Location}.
+			\item ....
+		\end{itemize}
+
+		\clearpage
+		On peut donc en déduire l'algorithme à utiliser afin de bloquer les publicités:\\
+
+		\begin{algorithm}[H]
+			\KwData{
+				\begin{itemize}
+					\item req: Requête du navigateur web à traiter
+					\item blacklist: Liste des URL à rejeter
+				\end{itemize}
+			}
+			\eIf{req.Host appartient à blacklist}{
+				rejeter la requête;\\
+				Signaler le navigateur web du rejet de la requête;
+   		}
+			{
+				Envoyer la requête au serveur;\\
+				Attendre la réponse;\\
+				Envoyer la réponse au navigateur web;
+			}
+		\end{algorithm}
+
+		\chapter{Développement}
+
+			On a fait ça en C et c'était kro b1en!
 
 \end{document}
