@@ -63,6 +63,7 @@
 
 \def\appName{MyAdblock}
 \def\widthImage{1}
+\def\todo{{\color{red}\Huge{TODO}}}
 
 \def\schoolYear{2016 - 2017}
 
@@ -109,6 +110,7 @@
 		Le site \href{http://www.01net.com}{http://www.01net.com} quant à lui sera utilisé pour
 		analyser et tester le filtrage de publicités (abondance de publicités et la communication avec ce site n'est pas chiffrée).
 
+
 		\section{Analyse du site telecomnancy.univ-lorraine.fr}
 
 		Lorsque l'on souhaite accéder au site \href{http://www.telecomnancy.univ-lorraine.fr}{http://www.telecomnancy.univ-lorraine.fr} (on suppose que l'on dispose de l'adresse
@@ -131,7 +133,6 @@
 			\caption{Nouvelles requêtes émises suite à la réception du contenu HTML}
 		\end{figure}
 
-
 		On peut également retrouver l'ensemble de ces requêtes dans l'outil de développement integré dans les navigateurs web:
 
 		\begin{figure} [htbp]
@@ -139,6 +140,7 @@
 			\includegraphics[width=\widthImage\textwidth]{3.png}\\
 			\caption{Requêtes HTTP effectuées par le navigateur web}
 		\end{figure}
+
 
 	\clearpage
 	\section{Analyse du site 01net.com}
@@ -184,8 +186,55 @@
 			}
 		\end{algorithm}
 
+
 		\chapter{Développement}
 
-			On a fait ça en C et c'était kro b1en!
+			Afin de réalisé \appName, nous nous sommes fortement inspirés du schéma présent sur le sujet.
+			Notre proxy dispose de trois parties:
+			\begin{itemize}
+				\item La socket \textbf{server}
+				\item La socket \textbf{dialog}
+				\item La socket \textbf{client}
+			\end{itemize}
+
+			Chaque partie est détaillé dans la suite de ce document.
+
+
+		\section{Socket server}
+
+			La socket \textbf{server} est le point d'entrée du proxy. Au lancement du programme \appName,
+			il sera nécéssaire de configurer le navigateur web afin qu'il utilise comme proxy le serveur du programme.
+			Dans le cadre de notre projet, le serveur fonctionne en local sur la machine. L'adresse IP est donc \textit{127.0.0.1}. Le port
+			a utiliser peut être précisé par l'utilisateur, sinon le programme choisit un port disponible.
+
+			Cette partie du programme est représenté par le fichier \textbf{server.c}. La structure \textit{server} réunit toutes les informations
+			afin de mettre la socket. Après l'appel des fonctions bind() et listen, il est nécéssaire
+			d'appeler \todo \textit{accept-server(...)}. Cette fonction accepte toutes communications se connectant sur le serveur
+			et initialise la socket de dialogue afin de traiter la requête HTTP.
+
+
+		\section{Socket dialog}
+
+			La socket \textbf{dialog} est utilisée afin de communiquer entre le navigateur web et le proxy. Cette socket est créée
+			suite à la methode \textit{accept()} sur la socket du serveur. Cette socket est représentée par le fichier \textbf{dialog.c}.
+			\todo
+
+		\section{Socket client}
+
+			La socket \textbf{client} permet de communiquer avec un serveur web. Le client va se connecter au serveur ciblé grâce à son adresse IP
+			et envoyer la requête HTTP du navigateur web. La réponse est ensuite renvoyé au client qui lui la transmettras à la socket de dialogue.
+			\todo
+
+		\section{Problèmes rencontrées}
+
+			Au cours du développement, nous avons rencontrées plusieurs difficultées.
+			Premièrement, l'utilisation du langage C a été un frein important notamment pour tout ce qui est
+			manipulation de chaînes de caractère.
+			Le filtrage des publicités repose principalement sur la recherche de chaînes de caractères dans le header HTTP des requêtes.
+			\todo
+
+
+			Nous avons rencontrées des difficultées au tout début du développement. La première version du programme devait simplement transmettre
+			les requêtes au serveurs ciblées sans aucun filtre.
 
 \end{document}
