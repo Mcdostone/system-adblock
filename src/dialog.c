@@ -5,6 +5,7 @@
 #include <regex.h>
 #include "dialog.h"
 #include "client.h"
+#include "adfilter.h"
 
 
 dialog* create_dialog() {
@@ -20,16 +21,21 @@ void read_request(dialog *d) {
   recv(d->dialog_socket, buffer, HTTP_REQUEST_SIZE - 1, 0);
   client *c;
   buffer[HTTP_REQUEST_SIZE - 1] = 0;
-  c = create_client(buffer);
-  if( c != NULL) {
-    handle_request(c, d);
-    close_client(c);
-    free(c);
+
+  char* buffercpy = strdup(buffer);
+  if (isAd(buffercpy)) {
+    c = create_client(buffer);
+    if( c != NULL) {
+      handle_request(c, d);
+      close_client(c);
+      free(c);
+    }
+    else {
+      if(DEBUG == 1)
+        printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
+    }
   }
-  else {
-    if(DEBUG == 1)
-      printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
-  }
+
 }
 
 void close_dialog(dialog *d) {

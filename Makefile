@@ -20,7 +20,7 @@ all: build
 %.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(INC) -c $< -o $(BUILDDIR)/$@
 
-main: server.o client.o dialog.o utils.o adblock.o
+main: server.o client.o dialog.o utils.o adblock.o adfilter.o
 	$(CC) $(CFLAGS) $(OBJ) -o $(TARGET)
 
 build: main
