@@ -17,7 +17,6 @@ dialog* create_dialog() {
 void read_request(dialog *d) {
   char buffer[HTTP_REQUEST_SIZE];
   memset(buffer, 0, sizeof(char) * HTTP_REQUEST_SIZE);
-
   recv(d->dialog_socket, buffer, HTTP_REQUEST_SIZE - 1, 0);
   client *c;
   buffer[HTTP_REQUEST_SIZE - 1] = 0;
@@ -28,12 +27,16 @@ void read_request(dialog *d) {
     if( c != NULL) {
       handle_request(c, d);
       close_client(c);
-      free(c);
+      //free(c);
     }
     else {
       if(DEBUG == 1)
         printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
     }
+  }
+  else {
+    printf("## Reject request: %.*s...\n", 50, buffer);
+    close_dialog(d);
   }
 
 }

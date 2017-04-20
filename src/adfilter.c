@@ -32,7 +32,7 @@ int isAd(char* http_request) {
 
 
    if ((strncmp(http_request, "GET", 3) == 0)) {
-      printf("%s\n", http_request);
+      //printf("%s\n", http_request);
       const char s[1] = " ";
       char *token;
 
@@ -40,7 +40,7 @@ int isAd(char* http_request) {
 
 
       token = strtok(NULL, s);
-      printf( "Address: %s\n", token );
+      //printf( "Address: %s\n", token );
 
       return testRequest(token);
    }

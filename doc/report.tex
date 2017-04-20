@@ -209,7 +209,7 @@
 
 			Cette partie du programme est représenté par le fichier \textbf{server.c}. La structure \textit{server} réunit toutes les informations
 			afin de mettre la socket. Après l'appel des fonctions bind() et listen, il est nécéssaire
-			d'appeler \todo \textit{accept-server(...)}. Cette fonction accepte toutes communications se connectant sur le serveur
+			d'appeler \textit{accept\_server(...)}. Cette fonction accepte toutes communications se connectant sur le serveur
 			et initialise la socket de dialogue afin de traiter la requête HTTP.
 
 
@@ -230,11 +230,36 @@
 			Au cours du développement, nous avons rencontrées plusieurs difficultées.
 			Premièrement, l'utilisation du langage C a été un frein important notamment pour tout ce qui est
 			manipulation de chaînes de caractère.
-			Le filtrage des publicités repose principalement sur la recherche de chaînes de caractères dans le header HTTP des requêtes.
-			\todo
+			Le filtrage des publicités repose principalement sur la recherche de chaînes de caractères dans le header HTTP des requêtes.\\
+
+			\noindent Nous avons rencontrés des difficultées au tout début du développement.
+			La première version du programme devait simplement transmettre les requêtes au serveurs ciblées sans aucun filtre.
+			Cependant, le proxy ne fonctionnait pas sur certains sites notamment \href{http://www.01net.com}{www.01net.com}.
+			En analysant les headers HTTP émises par le navigateur web, nous avons porté attention sur le champ
+			\textit{Connection: keep-alive}. Cette valeur signifie que le navigateur doit garder ouvert la connection (la socket) ouverte
+			pour les futures requêtes. Or dans le cas de notre proxy, si une socket traite une requête donnée, elle ne peut
+			pas traiter les autres requêtes qui arrivent en même temps. Par conséquent, celles arrivant durant le traitement sont perdus par
+			le proxy. Afin de contourner ce problème,
+			nous avons décidé de réécrire le header HTTP pour chaque requête. Cette réécriture
+			modifie uniquement la valeur du champ \textit{Connection} en le mettant à la valeur \textit{close}.
+			Cette valeur à pour effet de fermer la connection lorsque la réponse est envoyée au navigateur. Cela permet
+			également de créer une socket pour chaque requête faite par le navigateur, évitant de perdre des requêtes HTTP.
 
 
-			Nous avons rencontrées des difficultées au tout début du développement. La première version du programme devait simplement transmettre
-			les requêtes au serveurs ciblées sans aucun filtre.
+			\chapter{Conclusion}
+
+
+			\chapter{Bibliographie}
+			\begin{itemize}
+				\item \textit{Hypertext Transfer Protocol}, Wikipedia, \\\href{https://en.wikipedia.org/wiki/Hypertext\_Transfer\_Protocol}
+				{wikipedia.org/wiki/Hypertext\_Transfer\_Protocol}, consulté le 20 avril 2017
+
+				\item \textit{HTTP persistent connection}, Wikipedia, \\\href{https://en.wikipedia.org/wiki/HTTP\_persistent\_connection}
+				{wikipedia.org/wiki/HTTP\_persistent\_connection}, consulté le 15 avril 2017
+
+				\item \textit{Créer des filtres Adblock Plus}, Adblock Plus, \href{https://adblockplus.org/fr/filters}{adblockplus.org/fr/filters}, consulté le 16 avril 2017
+				\item easylist, \href{https://easylist.to/}{easylist.to}, consulté le 10 avril 2017
+			\end{itemize}
+
 
 \end{document}
