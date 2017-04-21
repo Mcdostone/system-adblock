@@ -71,10 +71,10 @@ dialog* accept_server(server *s) {
         free(s);
         exit(0);
       }
-      /*else {
-        close(numDialog);
+      else {
+        //close(numDialog);
         free(d);
-      }*/
+      }
     }
   }
   return NULL;

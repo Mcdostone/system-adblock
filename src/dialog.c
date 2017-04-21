@@ -23,15 +23,18 @@ void read_request(dialog *d) {
 
   char* buffercpy = strdup(buffer);
   if (isAd(buffercpy)) {
-    c = create_client(buffer);
+    char *request_client = strdup(buffer);
+    c = create_client(request_client);
     if( c != NULL) {
       handle_request(c, d);
       close_client(c);
-      //free(c);
+      free(c);
+      free(request_client);
     }
     else {
       if(DEBUG == 1)
         printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
+        free(request_client);
     }
   }
   else {
@@ -39,6 +42,7 @@ void read_request(dialog *d) {
     close_dialog(d);
   }
 
+  free(buffercpy);
 }
 
 void close_dialog(dialog *d) {
