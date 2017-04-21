@@ -65,14 +65,14 @@ dialog* accept_server(server *s) {
       d->dialog_socket = numDialog;
       if(fork() == 0) {
         read_request(d);
-        //close(numDialog);
+        //close_dialog(d);
         free(d);
         close_server(s);
         free(s);
         exit(0);
       }
       else {
-        //close(numDialog);
+        //close_dialog(d);
         free(d);
       }
     }

@@ -38,7 +38,8 @@ void read_request(dialog *d) {
     }
   }
   else {
-    printf("## Reject request: %.*s...\n", 50, buffer);
+    //printf("## Reject request: %.*s...\n", 50, buffer);
+    printf("## Reject request: %s...\n", buffer);
     close_dialog(d);
   }
 
