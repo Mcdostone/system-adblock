@@ -90,22 +90,22 @@
 		Celles-ci sont intégrés au sein même du site web (vidéos, bannières publicitaires...). L'abondance de contenus publicitaires apportent
 		cependant quelques désavantages: L'utilisateur peut être distrait par ces publicités, la lecture du site web est plus difficile
 		étant donnée la quantité d'information et l'affichage de ces publicités demandent plus de bande passante
-		ainsi que de ressources pour le navigateur web.Il existe cependant des logiciels permettant de supprimer
+		ainsi que de ressources pour le navigateur web. Il existe cependant des logiciels permettant de supprimer
 		ces publicités. Ces logiciels vont analyser le flux entrant et sortant du navigateur afin de filtrer le contenu publicitaire.\\
 
 		\noindent Dans le cadre de ce projet, nous devons développer un proxy ayant la même fonctionnaalité qu'un bloqueur de publicités.
-		Ce proxy sera programmé en langage C à l'aide des sockets vu durant les cours.
+		Ce proxy sera programmé en langage C à l'aide des sockets vus durant les cours.
 
 
 	\chapter{Analyse}
 
-		Afin de comprendre comment il est possible de filtrer les publicités, il est nécéssaire de comprendre fonctionne un navigateur web.
+		Afin de comprendre comment il est possible de filtrer les publicités, il est nécessaire de comprendre fonctionne un navigateur web.
 		On dispose de :
 		\begin{itemize}
 			\item Un navigateur web (le choix a peu d'importance dans le cadre de ce projet)
 			\item Wireshark, un logiciel permettant capturer les paquets entrants et sortants de la machine\\
 		\end{itemize}
-		\noindent L'analyse des échanges TCP et HTTP se fera sur le site
+		\noindent L'analyse des échanges TCP et HTTP se feront sur le site
 		\href{http://www.telecomnancy.univ-lorraine.fr}{http://www.telecomnancy.univ-lorraine.fr}.
 		Le site \href{http://www.01net.com}{http://www.01net.com} quant à lui sera utilisé pour
 		analyser et tester le filtrage de publicités (abondance de publicités et la communication avec ce site n'est pas chiffrée).
@@ -116,7 +116,7 @@
 		Lorsque l'on souhaite accéder au site \href{http://www.telecomnancy.univ-lorraine.fr}{http://www.telecomnancy.univ-lorraine.fr} (on suppose que l'on dispose de l'adresse
 		IP du serveur), des requêtes TCP (12, 13 et 14) sont envoyés au serveur afin d'initialiser la phase de connexion
 		Suite à cela, une requête HTTP (15) de type \textit{GET} est envoyée au serveur afin de le contenu HTML du site web. La réponse du serveur est
-		obtenu au paquet 29. Le contenu HTML est alors affiché dans le navigateur:
+		obtenue au paquet 29. Le contenu HTML est alors affiché dans le navigateur:
 
 		\begin{figure} [htbp]
 			\centering
@@ -124,7 +124,7 @@
 			\caption{Echanges de paquets au début de la communication}
 		\end{figure}
 
-		\noindent Cependant, le contenu HTML dépend d'autres ressources. Il est donc nécéssaire
+		\noindent Cependant, le contenu HTML dépend d'autres ressources. Il est donc nécessaire
 		récupérer les différentes ressources (images, fichiers CSS, fichiers JS). De nouvelles requêtes sont alors envoyées (35, 38, 41...):
 
 		\begin{figure} [htbp]
@@ -133,7 +133,7 @@
 			\caption{Nouvelles requêtes émises suite à la réception du contenu HTML}
 		\end{figure}
 
-		On peut également retrouver l'ensemble de ces requêtes dans l'outil de développement integré dans les navigateurs web:
+		On peut également retrouver l'ensemble de ces requêtes dans l'outil de développement intégré dans les navigateurs web:
 
 		\begin{figure} [htbp]
 			\centering
@@ -145,7 +145,7 @@
 	\clearpage
 	\section{Analyse du site 01net.com}
 		Le site contient de nombreux contenus publicitaires. Voici quelques requêtes permettant
-		de faire une hypothese sur l'algorithme à développer:
+		de faire une hypothèse sur l'algorithme à développer:
 
 		\begin{figure} [htbp]
 			\centering
@@ -162,7 +162,7 @@
 			\item la réponse à une requête peut rediriger vers une autre URL disponible sur un autre serveur:
 			on a dans la réponse HTTP de la requête 75 le champ \textit{Location: http://ak-ns.sascdn.com/diff/js/smart.js}, cela
 			signifie que le navigateur devra faire une nouvelle requête à l'adresse indique dans le champ \textit{Location}.
-			\item ....
+			\item \todo depend de ce que tu utilises quentin lors du filtrage
 		\end{itemize}
 
 		\clearpage
@@ -176,7 +176,7 @@
 				\end{itemize}
 			}
 			\eIf{req.Host appartient à blacklist}{
-				rejeter la requête;\\
+				Rejeter la requête;\\
 				Signaler le navigateur web du rejet de la requête;
    		}
 			{
@@ -189,7 +189,7 @@
 
 		\chapter{Développement}
 
-			Afin de réalisé \appName, nous nous sommes fortement inspirés du schéma présent sur le sujet.
+			Afin de réaliser \appName, nous nous sommes fortement inspirés du schéma présent sur le sujet.
 			Notre proxy dispose de trois parties:
 			\begin{itemize}
 				\item La socket \textbf{server}
@@ -197,43 +197,47 @@
 				\item La socket \textbf{client}
 			\end{itemize}
 
-			Chaque partie est détaillé dans la suite de ce document.
+			Chaque partie est détaillée dans la suite de ce document.
 
 
 		\section{Socket server}
 
 			La socket \textbf{server} est le point d'entrée du proxy. Au lancement du programme \appName,
-			il sera nécéssaire de configurer le navigateur web afin qu'il utilise comme proxy le serveur du programme.
+			il sera nécessaire de configurer le navigateur web afin qu'il utilise comme proxy le serveur du programme.
 			Dans le cadre de notre projet, le serveur fonctionne en local sur la machine. L'adresse IP est donc \textit{127.0.0.1}. Le port
-			a utiliser peut être précisé par l'utilisateur, sinon le programme choisit un port disponible.
+			à utiliser peut être précisé par l'utilisateur, sinon le programme choisit un port disponible.
 
-			Cette partie du programme est représenté par le fichier \textbf{server.c}. La structure \textit{server} réunit toutes les informations
-			afin de mettre la socket. Après l'appel des fonctions bind() et listen, il est nécéssaire
-			d'appeler \textit{accept\_server(...)}. Cette fonction accepte toutes communications se connectant sur le serveur
-			et initialise la socket de dialogue afin de traiter la requête HTTP.
+			Cette partie du programme est représentée par le fichier \textbf{server.c}. La structure \textit{server} réunit toutes les informations
+			afin d'initialiser la socket. Après l'appel des fonctions bind() et listen, il est nécéssaire
+			d'appeler \textit{accept\_server(...)}. Cette fonction accepte toute communication se connectant sur le serveur
+			et initialise la socket de dialogue afin de traiter la requête HTTP. Le multi-clients a été géré à l'aide d'un fork. \todo formulation chelou
 
 
 		\section{Socket dialog}
 
 			La socket \textbf{dialog} est utilisée afin de communiquer entre le navigateur web et le proxy. Cette socket est créée
-			suite à la methode \textit{accept()} sur la socket du serveur. Cette socket est représentée par le fichier \textbf{dialog.c}.
+			suite à la méthode \textit{accept()} sur la socket du serveur. Cette socket est représentée par le fichier \textbf{dialog.c}.
+			La version de notre programme traite uniquement les requêtes de type \textit{GET} en HTTP. Cette vérification s'effectue au niveau de la socket
+			de dialogue. Si les conditions sont vérifiées, alors une socket client est initialisée afin de communiquer avec le serveur HTTP ciblé.
 			\todo
 
 		\section{Socket client}
 
 			La socket \textbf{client} permet de communiquer avec un serveur web. Le client va se connecter au serveur ciblé grâce à son adresse IP
-			et envoyer la requête HTTP du navigateur web. La réponse est ensuite renvoyé au client qui lui la transmettras à la socket de dialogue.
+			et envoyer la requête HTTP du navigateur web. La réponse est ensuite renvoyée
+			au client qui lui la transmettras à la socket de dialogue.
 			\todo
 
 		\section{Problèmes rencontrées}
 
-			Au cours du développement, nous avons rencontrées plusieurs difficultées.
+			Au cours du développement, nous avons rencontrées plusieurs difficultés.
 			Premièrement, l'utilisation du langage C a été un frein important notamment pour tout ce qui est
 			manipulation de chaînes de caractère.
 			Le filtrage des publicités repose principalement sur la recherche de chaînes de caractères dans le header HTTP des requêtes.\\
+			Utiliser le langage C pour ce genre de programmation devient fastidieux et instable.
 
-			\noindent Nous avons rencontrés des difficultées au tout début du développement.
-			La première version du programme devait simplement transmettre les requêtes au serveurs ciblées sans aucun filtre.
+			\noindent Nous avons rencontrés des difficultés au tout début du développement.
+			La première version du programme devait simplement transmettre les requêtes au serveur ciblé sans aucun filtre.
 			Cependant, le proxy ne fonctionnait pas sur certains sites notamment \href{http://www.01net.com}{www.01net.com}.
 			En analysant les headers HTTP émises par le navigateur web, nous avons porté attention sur le champ
 			\textit{Connection: keep-alive}. Cette valeur signifie que le navigateur doit garder ouvert la connection (la socket) ouverte
