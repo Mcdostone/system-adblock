@@ -34,7 +34,7 @@ void read_request(dialog *d) {
     else {
       if(DEBUG == 1)
         printf("-- Ignore following request: %.*s...\n\n", 20, buffer);
-        free(request_client);
+      free(request_client);
     }
   }
   else {
