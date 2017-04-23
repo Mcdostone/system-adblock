@@ -47,11 +47,9 @@ void connect_client(client *c) {
 void send_http_request(client *c) {
   create_new_http_request(c->http_request, c->new_http_request);
   if(DEBUG == 1) {
-//    printf("-- Sending request to '%s'\n%s\n", c->hostname, c->new_http_request);
     printf("-- Sending request to '%s'\n", c->hostname);
-
+    printf("%s\n",c->new_http_request);
   }
-  printf("%s\n",c->new_http_request);
   send(c->client_socket, c->new_http_request, strlen(c->new_http_request), 0);
 }
 

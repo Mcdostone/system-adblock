@@ -20,10 +20,12 @@ void read_request(dialog *d) {
   recv(d->dialog_socket, buffer, HTTP_REQUEST_SIZE - 1, 0);
   client *c;
   buffer[HTTP_REQUEST_SIZE - 1] = 0;
-  printf("%s\n",buffer);
+  printf("--%s...\n\n", buffer);
+  if(DEBUG == 1)
+    printf("%s\n",buffer);
 
   char* buffercpy = strdup(buffer);
-  if (isAd(buffercpy)) {
+  if (isAd(buffercpy) == 0) {
     char *request_client = strdup(buffer);
     c = create_client(request_client);
     if( c != NULL) {
@@ -43,7 +45,7 @@ void read_request(dialog *d) {
     printf("## Reject request: %s...\n", buffer);
     close_dialog(d);
   }
-
+  close_dialog(d);
   free(buffercpy);
 }
 

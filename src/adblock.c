@@ -4,6 +4,7 @@
 #include <signal.h>
 #include "server.h"
 #include "utils.h"
+#include "adfilter.h"
 #define BUFFER_SIZE 1024
 
 
@@ -45,6 +46,7 @@ int main(int argc, char *argv[]) {
   }
 
   // program
+  load_file();
   s = create_server(port);
   bind_server(s);
   listen_server(s);
