@@ -12,7 +12,7 @@
 #define REGEX_METHOD "^GET"
 
 
-char* get_hostname(char *http_request, char* hostname) {
+char* get_hostname_regex(char *http_request, char* hostname) {
   regex_t regex_hostname;
   int status = regcomp(&regex_hostname, REGEX_HOSTNAME, REG_EXTENDED);
   if(status  != 0) {
@@ -33,6 +33,36 @@ char* get_hostname(char *http_request, char* hostname) {
 
   regfree(&regex_hostname);
   return NULL;
+}
+
+char* get_hostname(char *http_request, char* hostname) {
+  char t1[300],t2[300],t3[10];
+  char* temp;
+  sscanf(http_request,"%s %s %s",t1,t2,t3);
+  strcpy(t1,t2);
+  int flag=0;
+  for(int i=7; i<strlen(t2); i++)
+  {
+          if(t2[i]==':')
+          {
+                  flag=1;
+                  break;
+          }
+  }
+
+  temp=strtok(t2,"//");
+  if(flag==0)
+  {
+          temp=strtok(NULL,"/");
+  }
+  else
+  {
+          temp=strtok(NULL,":");
+  }
+
+  sprintf(t2,"%s",temp);
+  strncpy(hostname, t2, 300);
+  return hostname;
 }
 
 
@@ -73,6 +103,10 @@ int is_GET(char *http_request) {
   res = regexec(&regex_method, p, 0, NULL, 0);
   regfree(&regex_method);
   return res;
+}
+
+int is_GET2(char* http_request) {
+  return (strncmp(http_request, "GET", 3) != 1);
 }
 
 

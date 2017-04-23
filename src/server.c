@@ -13,7 +13,7 @@ server* create_server(int port) {
   s->serv_addr.sin_family = AF_INET;
   s->serv_addr.sin_addr.s_addr = inet_addr(LOCALHOST);
   s->serv_addr.sin_port = port == 0 ? 0 : htons(port);
-  s->server_socket = socket(AF_INET, SOCK_STREAM, 0);
+  s->server_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
   if(s->server_socket < 0) {
     perror("Error on server socket: cannot create the server socket\n");
     exit(1);

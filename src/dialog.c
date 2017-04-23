@@ -20,6 +20,7 @@ void read_request(dialog *d) {
   recv(d->dialog_socket, buffer, HTTP_REQUEST_SIZE - 1, 0);
   client *c;
   buffer[HTTP_REQUEST_SIZE - 1] = 0;
+  printf("%s\n",buffer);
 
   char* buffercpy = strdup(buffer);
   if (isAd(buffercpy)) {

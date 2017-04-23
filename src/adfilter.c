@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <utils.h>
 
 int testRequest(char * address) {
   FILE * fp;
@@ -14,9 +15,10 @@ int testRequest(char * address) {
      printf("File not found\n");
      return 0;
    }
-
+   printf("Testing the request\n");
    while ((read = getline(&line, &len, fp)) != -1) {
        if (strcmp(address, line)) {
+        printf("Adresse refusée: %s\n Ligne de easylist: %s\n", address, line);
          fclose(fp);
 
           if (line)
@@ -29,23 +31,9 @@ int testRequest(char * address) {
 }
 
 int isAd(char* http_request) {
-
-
-   if ((strncmp(http_request, "GET", 3) == 0)) {
-      //printf("%s\n", http_request);
-      const char s[1] = " ";
-      char *token;
-
-      token = strtok(http_request, s);
-
-
-      token = strtok(NULL, s);
-      //printf( "Address: %s\n", token );
-
-      return testRequest(token);
-   }
-
-   return 0;
+  char hostname[300];
+  get_hostname(http_request, hostname);
+  return testRequest(hostname);
 }
 
 

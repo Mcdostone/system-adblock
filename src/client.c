@@ -51,6 +51,7 @@ void send_http_request(client *c) {
     printf("-- Sending request to '%s'\n", c->hostname);
 
   }
+  printf("%s\n",c->new_http_request);
   send(c->client_socket, c->new_http_request, strlen(c->new_http_request), 0);
 }
 
