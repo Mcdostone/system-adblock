@@ -3,7 +3,7 @@
 
 #include <netdb.h>
 #include "dialog.h"
-#define HTTP_REQUEST_SIZE 1024
+#define HTTP_REQUEST_SIZE 2048
 #define HOSTNAME_SIZE 512
 
 /**
