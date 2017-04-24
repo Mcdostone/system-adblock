@@ -67,12 +67,13 @@ void accept_server(server *s) {
         read_request(d);
         //close_dialog(d);
         free(d);
+        close_dialog(d);
         close_server(s);
         free(s);
         exit(0);
       }
       else {
-        //close_dialog(d);
+        close_dialog(d);
         free(d);
       }
     }
