@@ -24,10 +24,11 @@ void load_file() {
     printf("File not found\n");
     exit(1);
   }
-  //printf("Testing the request\n");
+
   int i = 0;
   getline(&filters[0], &len, fp);
-  while (((read = getline(&filters[i], &len, fp)) != -1) && i < NB_FILTERS) {
+  while (!feof(fp) && i < NB_FILTERS) {
+    read = getline(&filters[i], &len, fp);
     if (filters[i][0] != '!' && filters[i][0] != '|'
     && filters[i][0] != '@' && filters[i][0] != '#') {
       filters[i][read - 1] = 0;
@@ -49,10 +50,12 @@ int testRequest(char * address) {
   if(loaded == 0) {
     load_file();
   }
-
+  if(DEBUG == 1)
+      printf("~~ Testing the request\n");
   int i = 0;
   while (filters[i] != NULL) {
-    if(strstr(address, filters[i]) != NULL) {
+    if(strstr(address, filters[i]) != NULL && strlen(filters[i])>0) {
+      printf("HORRIBLE: %s HFAEIFB %ld\n", filters[i], strlen(filters[i]));
       return 1;
     }
     i = i + 1;
