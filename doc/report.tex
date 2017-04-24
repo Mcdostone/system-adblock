@@ -232,7 +232,8 @@
 		\section{Adfilter}
 
 			Lors de la création de la socket de dialogue, on va réaliser le filtrage des adresses émises par les requêtes GET.
-			On initialise un tableau contenant la totalité des adresses présentes dans le fichier easylist.
+			On initialise un tableau contenant la totalité des adresses présentes dans le fichier easylist. On va ensuite comparer l'adresse de
+			la requête avec les entrées du tableau. Si jamais l'adresse correspond à une entrée, on ne communique pas la requête au socket client.
 
 		\section{Problèmes rencontrées}
 
@@ -268,6 +269,10 @@
 			easylist.
 
 			\chapter{Conclusion}
+
+			 Nous avons vu la réalisation d'un proxy complet HTTP utilisant les socket système en C dans le but de réaliser un adblocker.
+			 Nous avons donc suivi un raisonnement complet, de l'analyse de trace réseau à l'aide de Wireshark, jusqu'à l'implémentation
+			 du proxy et du système de filtrage des pubs. 
 
 
 			\chapter{Bibliographie}
