@@ -55,7 +55,6 @@ int testRequest(char * address) {
   int i = 0;
   while (filters[i] != NULL) {
     if(strstr(address, filters[i]) != NULL && strlen(filters[i])>0) {
-      printf("HORRIBLE: %s HFAEIFB %ld\n", filters[i], strlen(filters[i]));
       return 1;
     }
     i = i + 1;

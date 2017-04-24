@@ -219,8 +219,6 @@
 			suite à la méthode \textit{accept()} sur la socket du serveur. Cette socket est représentée par le fichier \textbf{dialog.c}.
 			La version de notre programme traite uniquement les requêtes de type \textit{GET} en HTTP. Cette vérification s'effectue au niveau de la socket
 			de dialogue. Si les conditions sont vérifiées, alors une socket client est initialisée afin de communiquer avec le serveur HTTP ciblé.
-			Nous avons effectué un simple filtrage sur l'adresse de la requête, si cette adresse appartient à notre fichier easylist, on ne communique
-			pas la requête.
 
 		\section{Socket client}
 
@@ -230,6 +228,11 @@
 			\todo
 			On va créer une nouvelle requête HTTP à partir de celle reçu par le navigateur et l'envoyer directement au serveur web.
 			C'est cette partie du programme qui se charge de la traduction des adresses pour la création du socket.
+
+		\section{Adfilter}
+
+			Lors de la création de la socket de dialogue, on va réaliser le filtrage des adresses émises par les requêtes GET.
+			On initialise un tableau contenant la totalité des adresses présentes dans le fichier easylist.
 
 		\section{Problèmes rencontrées}
 
@@ -251,6 +254,9 @@
 			modifie uniquement la valeur du champ \textit{Connection} en le mettant à la valeur \textit{close}.
 			Cette valeur à pour effet de fermer la connection lorsque la réponse est envoyée au navigateur. Cela permet
 			également de créer une socket pour chaque requête faite par le navigateur, évitant de perdre des requêtes HTTP.
+			Nous avons mis en place la recherche dans le fichier easylist, mais aucun des domaines présent ne fait partie du fichier.
+			En effet, notre proxy ne laisse pas passer les requêtes \it{CONNECT} dans lesquels nous avons remarquer que certaines addresses étaient
+			présentes dans le fichier easylist.
 
 		\section{Améliorations possibles}
 
@@ -260,12 +266,6 @@
 			pub intégré à la page. Cette partie n'a pas été réalisé car nous considérions qu'elle était peu pertinente dans le cadre du projet.
 			Il aurait fallu au sein de notre serveur proxy, analyser le DOM et modifier les parties ayant une correspondance dans le fichier
 			easylist.
-
-			De plus, notre programme a été développé sous Linux et n'a donc par conséquent pas été testé sur d'autres systèmes d'exploitations.
-			Une possibilité est de faire fonctionner ce serveur proxy sur une machine distante comme un proxy classique, qui aurait pour seul but
-			de filtrer les pubs.
-
-
 
 			\chapter{Conclusion}
 
