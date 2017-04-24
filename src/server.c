@@ -55,7 +55,7 @@ void listen_server(server *s) {
   }
 }
 
-dialog* accept_server(server *s) {
+void accept_server(server *s) {
   if(s->server_socket >= 0) {
     int numDialog;
 
@@ -77,7 +77,6 @@ dialog* accept_server(server *s) {
       }
     }
   }
-  return NULL;
 }
 
 void close_server(server *s) {

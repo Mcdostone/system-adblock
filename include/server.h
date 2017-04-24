@@ -34,7 +34,7 @@ void listen_server(server *s);
 /**
   wait and accept a connection on the server socket.
 */
-dialog* accept_server(server *s);
+void accept_server(server *s);
 
 /**
   Close the server socket.

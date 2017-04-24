@@ -20,7 +20,7 @@ client* create_client(char *http_request) {
     memset(&(c->hints), 0, sizeof(c->hints));
     memset(c->new_http_request, 0, HTTP_REQUEST_SIZE);
     memset(c->hostname, 0, HOSTNAME_SIZE);
-    c->hints.ai_family = AF_INET;
+    c->hints.ai_family = AF_UNSPEC;
     c->http_request = http_request;
     c->hints.ai_socktype = SOCK_STREAM;
 
@@ -29,7 +29,7 @@ client* create_client(char *http_request) {
     c->client_socket = socket(c->res->ai_family, c->res->ai_socktype, c->res->ai_protocol);
 
     if(c->client_socket < 0) {
-      perror("Error on client socket: cannot create the client socket\n");
+      //perror("Error on client socket: cannot create the client socket\n");
       exit(1);
     }
   }
