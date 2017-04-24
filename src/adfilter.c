@@ -8,7 +8,7 @@ int testRequest(char * address) {
   FILE * fp;
    char * line = NULL;
    size_t len = 0;
-   ssize_t read;
+
 
    fp = fopen("easylist.txt", "r");
    if (fp == NULL) {
@@ -16,10 +16,11 @@ int testRequest(char * address) {
      return 0;
    }
    printf("Testing the request\n");
-   while ((read = getline(&line, &len, fp)) != -1) {
-       if (strcmp(address, line)) {
+   while (feof(fp) == 0) {
+      getline(&line, &len, fp);
+       if (strcmp(address, line) == 0) {
         printf("Adresse refusée: %s\n Ligne de easylist: %s\n", address, line);
-         fclose(fp);
+          fclose(fp);
 
           if (line)
                 free(line);

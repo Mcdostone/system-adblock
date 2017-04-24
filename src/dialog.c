@@ -23,7 +23,7 @@ void read_request(dialog *d) {
   printf("%s\n",buffer);
 
   char* buffercpy = strdup(buffer);
-  if (isAd(buffercpy)) {
+  if (isAd(buffer)) {
     char *request_client = strdup(buffer);
     c = create_client(request_client);
     if( c != NULL) {
